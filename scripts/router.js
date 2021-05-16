@@ -5,7 +5,7 @@ export const router = {};
 /**
  * Changes the "page" (state) that your SPA app is currently set to
  */
-router.setState = function() {
+router.setState = function(last, state) {
   /**
    * - There are three states that your SPA app will have
    *    1. The home page
@@ -35,4 +35,33 @@ router.setState = function() {
    *    1. You may add as many helper functions in this file as you like
    *    2. You may modify the parameters of setState() as much as you like
    */
+   console.log(state.entryNumber);
+   if(state.pageType=="Home"){
+      let stateName=" ";
+      document.getElementsByTagName('h1')[0].innerHTML = 'Journal Entries';
+      document.getElementsByTagName('body')[0].className = '';
+      if(last==false){
+      history.pushState(state, "", stateName);
+      }
+   }
+   else if(state.pageType=="Settings"){
+      let stateName = "#settings";
+      document.getElementsByTagName('h1')[0].innerHTML = 'Settings';
+      document.getElementsByTagName('body')[0].className = 'settings';
+      if(last==false){
+      history.pushState(state, "", stateName);
+      }
+   }
+   else if(state.pageType=="Entry"){
+      let stateName = "#entry"+state.entryNumber;
+      document.getElementsByTagName('h1')[0].innerHTML = "Entry "+state.entryNumber;
+      document.getElementsByTagName('body')[0].className = 'single-entry';
+      let entryViewing = document.createElement('entry-page');
+      entryViewing.entry = state.entryDetails;
+      document.getElementsByTagName('body')[0].appendChild(entryViewing);
+      document.getElementsByTagName('body')[0].removeChild(document.getElementsByTagName('entry-page')[0]);
+      if(last==false){
+      history.pushState(state, "", stateName);
+      }
+   }
 }
