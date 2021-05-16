@@ -9,10 +9,28 @@ document.addEventListener('DOMContentLoaded', () => {
   fetch('https://cse110lab6.herokuapp.com/entries')
     .then(response => response.json())
     .then(entries => {
+    	let numberOfEntreies = 0; 
       entries.forEach(entry => {
+      	numberOfEntreies = numberOfEntreies + 1;
+      	let thisEntry = numberOfEntreies;
         let newPost = document.createElement('journal-entry');
         newPost.entry = entry;
+        newPost.onclick = function(){
+        	setState(false, {pageType: "Entry", entryNumber: thisEntry, entryDetails: entry}); 
+        }
         document.querySelector('main').appendChild(newPost);
       });
     });
+});
+
+
+document.getElementsByTagName('h1')[0].onclick = function(){
+	setState(false, {pageType: "Home"}); 
+};
+document.getElementsByTagName('img')[0].onclick = function(){
+	setState(false, {pageType: "Settings"}); 
+}
+
+window.addEventListener('popstate', (event) => {
+	setState(true, event.state);
 });
